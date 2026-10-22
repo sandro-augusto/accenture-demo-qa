@@ -1,0 +1,39 @@
+{
+  "name": "accenture-demo-qa",
+  "version": "1.0.0",
+  "description": "Automacao front-end do DemoQA usando Cypress + Cucumber (BDD) com relatorio Allure",
+  "main": "index.js",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:run:chrome": "cypress run --browser chrome",
+    "test": "cypress run --browser chrome --config video=false --env allure=true || true",
+    "api:open": "cypress open --config-file cypress.config.api.js",
+    "api:run": "cypress run --config-file cypress.config.api.js --env allure=true",
+    "allure:clear": "rm -rf allure-results allure-report || true",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report",
+    "allure:serve": "allure serve allure-results",
+    "test:allure": "npm run allure:clear && npm run test && npm run allure:generate && npm run allure:open"
+  },
+  "keywords": [
+    "cypress",
+    "cucumber",
+    "bdd",
+    "allure",
+    "orange-hrm"
+  ],
+  "author": "Sandro Augusto",
+  "license": "ISC",
+  "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^20.1.2",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.3",
+    "@faker-js/faker": "^8.4.1",
+    "@shelex/cypress-allure-plugin": "^2.40.2",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "allure-commandline": "^2.29.0",
+    "cypress": "^13.13.0",
+    "cypress-real-events": "^1.15.1"
+  }
+}

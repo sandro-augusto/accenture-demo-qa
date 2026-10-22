@@ -1,0 +1,22 @@
+{
+  "title": "User Details",
+  "type": "object",
+  "properties": {
+    "userId": { "type": "string" },
+    "username": { "type": "string" },
+    "books": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "isbn": { "type": "string" },
+          "title": { "type": "string" },
+          "author": { "type": "string" },
+          "publisher": { "type": "string" }
+        },
+        "required": ["isbn"]
+      }
+    }
+  },
+  "required": ["userId", "username", "books"]
+}

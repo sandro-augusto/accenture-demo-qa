@@ -1,0 +1,11 @@
+// Status codes HTTP (espelha resources/config/service.resource *** Variables ***)
+const statusCode = {
+  ok: 200,
+  created: 201,
+  badRequest: 400,
+  unauthorized: 401,
+  notFound: 404,
+  notAcceptable: 406,
+};
+
+module.exports = { statusCode };

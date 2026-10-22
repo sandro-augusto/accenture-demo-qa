@@ -1,0 +1,11 @@
+{
+  "title": "Generate Token Success",
+  "type": "object",
+  "properties": {
+    "token": { "type": "string" },
+    "expires": { "type": "string" },
+    "status": { "type": "string" },
+    "result": { "type": "string" }
+  },
+  "required": ["token", "expires", "status", "result"]
+}

@@ -1,0 +1,18 @@
+# Dependencias
+/node_modules
+
+# Relatorios Allure
+/allure-results
+/allure-report
+
+# Artefatos do Cypress
+/videos
+**/screenshots
+**/downloads
+*.mp4
+
+# Resultados de execucao (Robot/legado)
+**/results
+
+# Sistema
+.DS_Store

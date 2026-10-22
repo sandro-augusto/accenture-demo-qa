@@ -1,0 +1,9 @@
+{
+  "stepDefinitions": [
+    "cypress/e2e/step_definitions/**/*.{js,ts}",
+    "api-tests/resources/steps/**/*.{js,ts}"
+  ],
+  "json": {
+    "enabled": false
+  }
+}

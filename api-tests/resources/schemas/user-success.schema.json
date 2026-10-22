@@ -1,0 +1,10 @@
+{
+  "title": "User Created Success",
+  "type": "object",
+  "properties": {
+    "userID": { "type": "string" },
+    "username": { "type": "string" },
+    "books": { "type": "array" }
+  },
+  "required": ["userID", "username", "books"]
+}

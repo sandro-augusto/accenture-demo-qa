@@ -1,0 +1,20 @@
+{
+  "title": "Books List",
+  "type": "object",
+  "properties": {
+    "books": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "isbn": { "type": "string" },
+          "title": { "type": "string" },
+          "author": { "type": "string" },
+          "publisher": { "type": "string" }
+        },
+        "required": ["isbn", "title", "author"]
+      }
+    }
+  },
+  "required": ["books"]
+}
