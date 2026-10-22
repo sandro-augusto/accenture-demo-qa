@@ -42,8 +42,8 @@ accenture-demo-qa/
 │   ├── features/             # .feature (Gherkin)
 │   ├── resources/{steps,keywords,config,variables,enviroments,schemas}
 │   └── fixtures/
-├── docs/
-│   └── RESUMO-PROJETO.md     # Resumo e decisões técnicas
+├── material-estudo.html      # Material de estudo (abre no navegador / vira PDF)
+├── material-estudo.pdf       # Mesmo material em PDF
 ├── cypress.config.js         # Config da suíte de UI
 ├── cypress.config.api.js     # Config da suíte de API
 └── package.json
@@ -102,4 +102,4 @@ npm run allure:serve      # servidor temporário a partir dos resultados
 
 - [`cypress/README.md`](./cypress/README.md) — detalhes da suíte de UI
 - [`api-tests/README.md`](./api-tests/README.md) — detalhes da suíte de API
-- [`docs/RESUMO-PROJETO.md`](./docs/RESUMO-PROJETO.md) — resumo do projeto e decisões técnicas
+- [`material-estudo.html`](./material-estudo.html) — material de estudo para apresentação (UI + API, desafios e FAQ)

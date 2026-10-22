@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Accenture Demo QA — Material de Estudo</title>
+<style>
+  :root {
+    --azul: #2b579a;
+    --azul-claro: #eaf1fb;
+    --cinza: #555;
+    --cinza-claro: #f4f5f7;
+    --borda: #d9dde3;
+    --verde: #1a7f45;
+    --vermelho: #b3261e;
+    --amarelo: #8a6d00;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1d1d1f;
+    line-height: 1.6;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 40px 28px 80px;
+    background: #fff;
+  }
+  h1 { color: var(--azul); font-size: 2em; margin-bottom: 4px; }
+  h2 {
+    color: var(--azul);
+    border-bottom: 3px solid var(--azul-claro);
+    padding-bottom: 6px;
+    margin-top: 44px;
+  }
+  h3 { color: #333; margin-top: 28px; }
+  .subtitulo { color: var(--cinza); font-size: 1.05em; margin-top: 0; }
+  code {
+    background: var(--cinza-claro);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.88em;
+    color: #c0341d;
+  }
+  pre {
+    background: #1e1e2e;
+    color: #e4e4ef;
+    padding: 14px 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 0.85em;
+    line-height: 1.5;
+  }
+  pre code { background: none; color: inherit; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.92em; }
+  th, td { border: 1px solid var(--borda); padding: 9px 12px; text-align: left; vertical-align: top; }
+  th { background: var(--azul-claro); color: var(--azul); }
+  tr:nth-child(even) td { background: #fafbfc; }
+  .box {
+    border-left: 4px solid var(--azul);
+    background: var(--azul-claro);
+    padding: 12px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 18px 0;
+  }
+  .box.alerta { border-left-color: var(--amarelo); background: #fdf6e3; }
+  .box.sucesso { border-left-color: var(--verde); background: #eaf7ef; }
+  .ok { color: var(--verde); font-weight: 600; }
+  .nok { color: var(--vermelho); font-weight: 600; }
+  .parcial { color: var(--amarelo); font-weight: 600; }
+  .tag {
+    display: inline-block;
+    background: var(--azul);
+    color: #fff;
+    font-size: 0.72em;
+    padding: 2px 9px;
+    border-radius: 12px;
+    vertical-align: middle;
+    margin-left: 8px;
+  }
+  .faq { border: 1px solid var(--borda); border-radius: 8px; padding: 4px 18px; margin: 14px 0; }
+  .faq .p { font-weight: 600; color: var(--azul); }
+  .capa {
+    text-align: center;
+    padding: 30px 0 10px;
+    border-bottom: 2px solid var(--azul-claro);
+    margin-bottom: 20px;
+  }
+  .meta { color: var(--cinza); font-size: 0.9em; }
+  ul.limpa { list-style: none; padding-left: 0; }
+  ul.limpa li { padding: 3px 0; }
+  @media print {
+    body { padding: 0 10px; max-width: none; }
+    h2 { page-break-after: avoid; }
+    pre, table, .faq, .box { page-break-inside: avoid; }
+    a { color: #000; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="capa">
+  <h1>Accenture Demo QA</h1>
+  <p class="subtitulo">Material de estudo para apresentação — Automação de Testes (UI + API)</p>
+  <p class="meta">Site sob teste: demoqa.com · Stack: Cypress + Cucumber (BDD) + Allure</p>
+</div>
+
+<div class="box">
+  <strong>Como usar este material:</strong> cada seção tem o <em>o quê</em>, o <em>porquê</em> e o
+  <em>como</em>. A última seção traz perguntas prováveis da banca com respostas — ensaie falar em
+  voz alta. O objetivo não é decorar, é <strong>entender para explicar</strong>.
+</div>
+
+<h2>1. Visão geral do projeto</h2>
+<p>
+  O projeto automatiza o site <a href="https://demoqa.com/">DemoQA</a> em dois domínios:
+  <strong>testes de UI</strong> (interface) e <strong>testes de API</strong> (o desafio BookStore).
+  Ambos usam <strong>Cypress</strong> como motor, <strong>Cucumber (Gherkin/BDD em português)</strong>
+  para descrever os cenários em linguagem natural, e <strong>Allure</strong> para o relatório.
+</p>
+
+<table>
+  <tr><th>Domínio</th><th>Pasta</th><th>O que cobre</th></tr>
+  <tr><td><strong>UI</strong></td><td><code>cypress/</code></td><td>4 fluxos: Practice Form, Browser Windows, Progress Bar e Sortable (drag and drop)</td></tr>
+  <tr><td><strong>API</strong></td><td><code>api-tests/</code></td><td>Fluxo BookStore E2E + cenários alternativos, com validação de contrato (JSON Schema) e mensagens de erro</td></tr>
+</table>
+
+<h3>Por que BDD/Cucumber?</h3>
+<p>
+  Os cenários ficam legíveis para qualquer pessoa (QA, PO, dev) porque são escritos em
+  <strong>Gherkin</strong> (<code>Dado / Quando / Então</code>). A implementação técnica fica
+  separada nos <em>step definitions</em>. Isso aproxima a documentação viva do teste real.
+</p>
+
+<h2>2. Arquitetura</h2>
+<p>O código é organizado em camadas, para não repetir lógica e facilitar a manutenção:</p>
+<pre><code>feature (.feature, Gherkin)
+   ↓
+step definitions  (traduz cada passo em ações)
+   ↓
+pages / keywords  (regras de domínio: login, livros, formulário...)
+   ↓
+actions / service (ações base: clicar, preencher, request HTTP, validar)
+   ↓
+elements / endpoints (seletores CSS / rotas da API)</code></pre>
+
+<ul class="limpa">
+  <li>🧩 <strong>Camada de actions (UI):</strong> todo acesso a elemento passa por <code>cypress/support/actions.js</code> (clicar, preencher, validar, etc.). Centraliza e padroniza.</li>
+  <li>🔁 <strong>Steps compartilhados:</strong> navegação comum (home, card, submenu) fica em <code>common_steps.js</code>, reutilizada pelos 4 fluxos de UI.</li>
+  <li>🌐 <strong>baseUrl + endpoints relativos:</strong> a URL base fica na config; os testes usam só <code>/forms</code>, <code>/sortable</code>, etc.</li>
+</ul>
+
+<div class="box alerta">
+  <strong>⚠️ Rodar no Chrome</strong> (<code>--browser chrome</code>). O Fluxo 4 (Sortable) usa
+  eventos de mouse reais via <strong>CDP</strong>, que só funcionam no Chrome real — não no Electron
+  headless padrão. Os scripts <code>test</code> e <code>cy:run:chrome</code> já forçam o Chrome.
+</div>
+
+<h2>3. Fluxos de UI</h2>
+
+<h3>Fluxo 1 — Practice Form <span class="tag">formulário + upload</span></h3>
+<p>Home → <strong>Forms</strong> → <strong>Practice Form</strong> → preenche tudo com dados aleatórios (faker) → faz upload de um <code>.txt</code> → submete → valida o popup → fecha o popup.</p>
+<div class="box">
+  <strong>Desafio:</strong> fechar o popup não funcionava — o clique no botão (mesmo com <code>force</code>) não disparava o handler do React, por causa de iframes de anúncios sobrepostos.<br>
+  <strong>Solução:</strong> fechar o modal pela tecla <strong>ESC</strong> (o react-bootstrap escuta ESC). Virou a action <code>pressionarTecla</code>.
+</div>
+
+<h3>Fluxo 2 — Browser Windows <span class="tag">nova janela</span></h3>
+<p>Home → <strong>Alerts, Frame &amp; Windows</strong> → <strong>Browser Windows</strong> → clica em <strong>New Window</strong> → valida a mensagem "This is a sample page" → fecha.</p>
+<div class="box">
+  <strong>Desafio:</strong> o Cypress não controla múltiplas abas/janelas nativamente.<br>
+  <strong>Solução:</strong> <code>cy.stub</code> em <code>window.open</code> para capturar a URL que seria aberta, navegar até ela no mesmo contexto e validar o conteúdo.
+</div>
+
+<h3>Fluxo 3 — Progress Bar <span class="tag">timing</span></h3>
+<p>Home → <strong>Widgets</strong> → <strong>Progress Bar</strong> → Start → para antes dos 25% → valida ≤ 25% → reinicia até 100% → reseta.</p>
+<div class="box">
+  <strong>Dois comportamentos reais descobertos por diagnóstico:</strong>
+  <ul>
+    <li>A barra sobe ~1% a cada 100ms. Para parar com segurança antes dos 25%, uso <strong>polling</strong> (retry do <code>should</code>) e paro numa faixa com folga (abaixo da metade do limite), absorvendo a latência até o clique de Stop.</li>
+    <li>O botão <strong>Reset</strong> (aos 100%) <strong>zera e reinicia</strong> a contagem sozinho. Por isso a validação confirma que o botão Reset some e o valor sai de 100% — em vez de exigir valor estável em 0.</li>
+  </ul>
+</div>
+
+<h3>Fluxo 4 — Sortable (drag and drop) <span class="tag">o mais difícil</span></h3>
+<p>Home → <strong>Interactions</strong> → <strong>Sortable</strong> → <strong>embaralha</strong> a lista → <strong>reordena</strong> em ordem crescente (One → Six) via drag and drop → valida a ordem.</p>
+<p>A página usa <strong>react-sortable-hoc</strong> (baseado em eventos de mouse/pointer), notoriamente difícil de automatizar. Progressão das tentativas:</p>
+<table>
+  <tr><th>Abordagem</th><th>Resultado</th></tr>
+  <tr><td><code>cy.trigger</code> sintético (mousedown/move/up, pageX/pageY, buttons:1)</td><td class="nok">❌ não reordena</td></tr>
+  <tr><td><code>cypress-real-dnd</code> (CDP HTML5 drag)</td><td class="nok">❌ não cobre libs de mouse-event (por design)</td></tr>
+  <tr><td><code>cypress-real-events</code> no Electron headless</td><td class="nok">❌ não reordena</td></tr>
+  <tr><td><code>cypress-real-events</code> no <strong>Chrome real</strong> + movimentos iniciais <strong>dentro do item</strong></td><td class="ok">✅ drag funciona</td></tr>
+  <tr><td>Controle fino da posição de destino (pular N posições)</td><td class="parcial">⚠️ instável</td></tr>
+</table>
+<div class="box sucesso">
+  <strong>O que destravou:</strong> o react-sortable-hoc só reconhece o arraste quando os primeiros
+  <code>realMouseMove</code> saem <strong>de dentro do próprio item</strong> (com
+  <code>keepMouseDownButton: "left"</code>) e <strong>no Chrome real</strong>.<br><br>
+  <strong>Como ficou confiável:</strong> em vez de "pular N posições" (instável), uso
+  <strong>trocas adjacentes</strong> (bubble sort): embaralho a lista e reordeno movendo um item
+  uma posição por vez, relendo o DOM entre as trocas. Isso torna o drag <strong>real e visível</strong>.
+</div>
+
+<h2>4. Testes de API — Desafio BookStore</h2>
+<p>
+  Fluxo do desafio (Swagger em <code>demoqa.com/swagger</code>), em Cypress (<code>cy.request</code>)
+  com Cucumber. Cada passo valida <strong>status code + contrato (JSON Schema via Ajv) + dados</strong>.
+</p>
+<ol>
+  <li><strong>Criar usuário</strong> — <code>POST /Account/v1/User</code></li>
+  <li><strong>Gerar token</strong> — <code>POST /Account/v1/GenerateToken</code></li>
+  <li><strong>Confirmar autorização</strong> — <code>POST /Account/v1/Authorized</code></li>
+  <li><strong>Listar livros</strong> — <code>GET /BookStore/v1/Books</code></li>
+  <li><strong>Alugar 2 livros</strong> — <code>POST /BookStore/v1/Books</code></li>
+  <li><strong>Detalhes do usuário com os livros</strong> — <code>GET /Account/v1/User/{id}</code></li>
+</ol>
+
+<h3>Cenários alternativos (com validação da mensagem de erro)</h3>
+<table>
+  <tr><th>Cenário</th><th>Esperado</th></tr>
+  <tr><td>Usuário já existente</td><td><code>406</code> · code 1204 · "User exists!"</td></tr>
+  <tr><td>Senha fraca</td><td><code>400</code> · code 1300 · regra de senha</td></tr>
+  <tr><td>userName / password vazio</td><td><code>400</code> · code 1200 · "UserName and Password required."</td></tr>
+  <tr><td>Token com usuário inexistente</td><td><code>200</code> · status "Failed"</td></tr>
+  <tr><td>Authorized com usuário inexistente</td><td><code>404</code> · code 1207 · "User not found!"</td></tr>
+  <tr><td>Alugar sem token</td><td><code>401</code></td></tr>
+  <tr><td>Alugar ISBN inexistente</td><td><code>400</code> · code 1205 · "ISBN supplied is not available..."</td></tr>
+</table>
+
+<h3>Independência + base limpa (setup/teardown)</h3>
+<div class="box sucesso">
+  Cada cenário <strong>cria o seu próprio usuário</strong> (nome aleatório, evita colisão) e o
+  <strong>exclui no fim</strong> via <code>DELETE /Account/v1/User/{id}</code> num hook
+  <code>After</code> do Cucumber — rodando mesmo se o teste falhar.<br><br>
+  Resultado: os testes são <strong>independentes</strong> (rodam em qualquer ordem) e <strong>não
+  sujam a base</strong>. O usuário "nasce e morre" dentro do fluxo de cada teste.
+</div>
+
+<h3>Descoberta importante da API</h3>
+<p>
+  O endpoint <code>Authorized</code> retorna <code>false</code> para um usuário recém-criado e só
+  passa a <code>true</code> <strong>depois</strong> de gerar o token. Isso foi descoberto validando
+  direto na API — por isso o cenário de autorização gera o token antes de confirmar.
+</p>
+
+<h2>5. Método de trabalho (como os problemas foram resolvidos)</h2>
+<ul>
+  <li><strong>Diagnosticar antes de corrigir:</strong> inspecionar o estado real do DOM/resposta no momento da falha, em vez de chutar a solução.</li>
+  <li><strong>Testar hipóteses isoladas</strong> em cenários de debug temporários, removidos depois.</li>
+  <li><strong>Parar de repetir o que não funciona:</strong> após falhas, investigar a causa raiz ou alinhar a decisão (ex.: o trade-off do drag).</li>
+  <li><strong>Validar de verdade:</strong> não confiar só no "passou" — ex.: confirmei na API que o usuário realmente foi excluído após o teardown.</li>
+</ul>
+
+<h2>6. Como executar</h2>
+<pre><code># instalar dependências
+npm install
+
+# UI (Chrome — necessário para o Fluxo 4)
+npm run cy:run:chrome
+
+# API
+npm run api:run
+
+# UI + API de uma vez
+npm run test:all
+
+# tudo + relatório Allure
+npm run test:all:allure</code></pre>
+<p class="meta">O Allure precisa de um runtime Java (JRE/JDK) para gerar o relatório HTML.</p>
+
+<h2>7. Perguntas prováveis na apresentação <span class="tag">ensaie em voz alta</span></h2>
+
+<div class="faq">
+  <p class="p">Por que você escolheu Cypress + Cucumber?</p>
+  <p>Cypress pela produtividade e bom suporte a UI e API no mesmo projeto. Cucumber porque deixa os cenários legíveis para o time todo (Gherkin em português) e separa o "o quê" (feature) do "como" (steps), aproximando documentação e teste.</p>
+</div>
+<div class="faq">
+  <p class="p">Por que o Sortable precisa do Chrome?</p>
+  <p>A lib react-sortable-hoc só reage a eventos de mouse "reais" (isTrusted). Os eventos sintéticos do Cypress são ignorados. Uso o cypress-real-events, que injeta eventos nativos via CDP — e esse CDP de injeção só funciona confiável no Chrome real, não no Electron headless.</p>
+</div>
+<div class="faq">
+  <p class="p">O drag realmente arrasta ou só valida a ordem?</p>
+  <p>Arrasta de verdade. Antes ele só validava a ordem já entregue (nenhum drag acontecia). Corrigi: agora o fluxo embaralha a lista e a reordena por trocas adjacentes, então o drag é executado e visível. Confirmei por diagnóstico que a lista fica bagunçada antes e volta a crescente no fim.</p>
+</div>
+<div class="faq">
+  <p class="p">Como você garante que os testes de API não sujam o banco?</p>
+  <p>Cada cenário cria seu usuário e o exclui no teardown (hook After, via DELETE). Como rodam com nomes aleatórios e cada um limpa o que criou, são independentes e não deixam resíduo. Validei na API que o usuário some após o delete.</p>
+</div>
+<div class="faq">
+  <p class="p">Como funciona a validação de contrato?</p>
+  <p>Uso JSON Schema com a biblioteca Ajv. Cada resposta é validada contra um schema (campos e tipos esperados). Isso pega mudanças de contrato que uma asserção pontual deixaria passar.</p>
+</div>
+<div class="faq">
+  <p class="p">Por que testar múltiplas janelas com stub e não abrir a janela de verdade?</p>
+  <p>O Cypress roda num único contexto de navegador e não controla uma segunda janela. A prática padrão é interceptar window.open com um stub, capturar a URL e validar o conteúdo navegando até ela — testando o efeito esperado sem depender de um recurso que a ferramenta não suporta.</p>
+</div>
+<div class="faq">
+  <p class="p">Qual foi a parte mais difícil e o que você aprendeu?</p>
+  <p>O drag and drop. Aprendi a diferença entre eventos sintéticos e nativos (isTrusted/CDP), que bibliotecas de drag exigem eventos reais, e a importância de diagnosticar a causa raiz em vez de tentar variações no escuro. Também aprendi a ser transparente sobre limitações e documentá-las.</p>
+</div>
+
+<p class="meta" style="margin-top:50px; text-align:center;">
+  Para gerar um PDF: abra este arquivo no navegador e use <strong>Imprimir → Salvar como PDF</strong>.
+</p>
+
+</body>
+</html>
