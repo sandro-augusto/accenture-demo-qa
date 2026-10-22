@@ -1,4 +1,4 @@
-// Endpoints da API (espelha resources/enviroments/endpoints.resource do projeto Robot)
+// Endpoints da API
 const endpoints = {
   // Account
   createUser: "/Account/v1/User",

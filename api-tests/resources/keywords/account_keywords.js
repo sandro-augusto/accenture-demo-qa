@@ -1,4 +1,4 @@
-// Keywords do dominio Account (espelha resources/keywords/*_keywords.resource)
+// Keywords do dominio Account (funcoes de dominio reutilizadas pelos steps)
 const {
   headersJson,
   sendPost,

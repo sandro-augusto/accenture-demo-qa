@@ -18,7 +18,7 @@ Ambos usam **Cypress + Cucumber (Gherkin/BDD, em português)** e geram relatóri
 | **UI** | `cypress/` | 4 fluxos: Practice Form, Browser Windows, Progress Bar e Sortable (drag and drop) | [`cypress/README.md`](./cypress/README.md) |
 | **API** | `api-tests/` | Fluxo BookStore E2E + cenários alternativos, com validação de contrato (JSON Schema) e das mensagens de erro | [`api-tests/README.md`](./api-tests/README.md) |
 
-> A suíte de **API** tem a organização de pastas inspirada no projeto Robot de referência
+> A suíte de **API** usa uma organização de pastas em camadas
 > (`features` + `resources/{config,keywords,variables,enviroments,schemas,steps}` + `fixtures`).
 
 ## 💻 Stack

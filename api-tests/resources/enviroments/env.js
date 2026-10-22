@@ -1,4 +1,4 @@
-// Controle de ambiente (espelha resources/enviroments/env.resource do projeto Robot)
+// Controle de ambiente
 const ENV = "Prd";
 
 const ENVIRONMENTS = {

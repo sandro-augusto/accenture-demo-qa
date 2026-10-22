@@ -5,9 +5,8 @@ implementada em **Cypress + Cucumber (BDD/Gherkin, em português)**, com **valid
 (JSON Schema via Ajv)**, **validação das mensagens de erro** e **Allure**.
 
 > **Linguagem:** Cypress/JavaScript (mesma do projeto), com cenários descritos em **Gherkin**.
-> A **organização de pastas e arquivos** é inspirada no projeto Robot de referência
-> (`qa-automation-api-regressivo`): `features`,
-> `resources/{config,keywords,variables,enviroments,schemas}` e `fixtures`.
+> A **organização de pastas e arquivos** segue uma arquitetura em camadas: `features`,
+> `resources/{config,keywords,variables,enviroments,schemas,steps}` e `fixtures`.
 
 ## 🧭 Fluxo principal (desafio)
 
@@ -49,33 +48,33 @@ Os cenários negativos validam **status + contrato + code + message** da respost
 - CT-203 Não alugar livros sem token → `401`
 - CT-204 Não alugar livro com ISBN inexistente → `400 / code 1205 / "ISBN supplied is not available in Books Collection!"`
 
-## 📁 Estrutura (espelhando a arquitetura do projeto Robot)
+## 📁 Estrutura
 
 ```
 api-tests/
-├── features/                       # Somente .feature (Gherkin) — equiv. a Features/*.robot
+├── features/                       # Somente .feature (Gherkin)
 │   ├── bookstore_flow.feature      # Fluxo principal E2E
 │   ├── account_user.feature        # Cenários de criação de usuário
 │   ├── account_token.feature       # Cenários de token/autorização
 │   └── bookstore_books.feature     # Cenários de livros/aluguel
 ├── resources/
-│   ├── steps/                      # Step definitions (Gherkin -> keywords)
-│   │   └── bookstore_steps.js      # equiv. a resources/steps (cola caso <-> lógica)
-│   ├── config/                     # equiv. a resources/config
-│   │   ├── service.js              # requests (POST/GET) + validações (status, contrato)
+│   ├── steps/                      # Step definitions (cola Gherkin -> keywords)
+│   │   └── bookstore_steps.js
+│   ├── config/
+│   │   ├── service.js              # requests (POST/GET/DELETE) + validações (status, contrato)
 │   │   └── utils.js                # geração de massa (fakers)
-│   ├── keywords/                   # equiv. a resources/keywords — funções de domínio
+│   ├── keywords/                   # funções de domínio
 │   │   ├── account_keywords.js
 │   │   ├── token_keywords.js
 │   │   └── books_keywords.js
-│   ├── variables/                  # equiv. a resources/variables
+│   ├── variables/
 │   │   ├── service_variables.js    # status codes
 │   │   ├── account_variables.js    # dados/mensagens de erro
 │   │   └── books_variables.js
-│   ├── enviroments/                # equiv. a resources/enviroments
+│   ├── enviroments/
 │   │   ├── env.js                  # controle de ambiente + baseUrl
 │   │   └── endpoints.js            # endpoints da API
-│   └── schemas/                    # equiv. a resources/schemas — JSON Schemas de contrato
+│   └── schemas/                    # JSON Schemas de contrato
 │       ├── user-success.schema.json
 │       ├── token-success.schema.json
 │       ├── token-failed.schema.json
@@ -83,7 +82,7 @@ api-tests/
 │       ├── rent-success.schema.json
 │       ├── user-details.schema.json
 │       └── error.schema.json
-├── fixtures/                       # payloads base (equiv. a fixtures/*.json)
+├── fixtures/                       # payloads base
 │   ├── user_fixture.json
 │   └── rent_fixture.json
 └── support/
@@ -135,8 +134,8 @@ que o cenário falhe. Tudo implementado em `resources/steps/bookstore_steps.js`.
 
 ## 🔎 Decisões e aprendizados (comportamento real da API)
 
-- **Validação de contrato:** usamos **Ajv** (`resources/config/service.js` → `validateContract`),
-  equivalente ao `Validate Jsonschema From File` do Robot.
+- **Validação de contrato:** usamos **Ajv** (`resources/config/service.js` → `validateContract`)
+  para validar cada resposta contra um JSON Schema.
 - **`Authorized` depende do token:** descobri (validando direto na API) que um usuário recém-criado
   retorna `authorized = false` e só passa a `true` **depois** de gerar um token. Por isso o
   CT-104 gera o token antes de confirmar a autorização, e o CT-106 documenta o `false` prévio.

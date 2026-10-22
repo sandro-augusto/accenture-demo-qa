@@ -1,4 +1,4 @@
-// Status codes HTTP (espelha resources/config/service.resource *** Variables ***)
+// Status codes HTTP usados nas validacoes
 const statusCode = {
   ok: 200,
   created: 201,

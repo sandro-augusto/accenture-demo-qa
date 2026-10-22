@@ -11,7 +11,7 @@
 **/downloads
 *.mp4
 
-# Resultados de execucao (Robot/legado)
+# Resultados de execucao
 **/results
 
 # Sistema

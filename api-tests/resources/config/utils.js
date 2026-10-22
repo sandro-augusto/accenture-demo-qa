@@ -1,4 +1,4 @@
-// Geracao de massa de dados (espelha resources/config/utils.resource -> Fakers)
+// Geracao de massa de dados (fakers)
 const { faker } = require("@faker-js/faker");
 
 function fakers() {

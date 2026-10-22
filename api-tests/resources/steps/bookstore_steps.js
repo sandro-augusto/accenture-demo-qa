@@ -10,7 +10,7 @@ const account = require("../keywords/account_keywords");
 const token = require("../keywords/token_keywords");
 const books = require("../keywords/books_keywords");
 
-// Schemas por nome (equivalente as variaveis ${SchemaXxx} do projeto Robot)
+// Schemas de contrato, referenciados por nome
 const schemas = {
   "user-success": require("../schemas/user-success.schema.json"),
   "token-success": require("../schemas/token-success.schema.json"),

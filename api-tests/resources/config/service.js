@@ -1,5 +1,5 @@
-// Camada de servico (espelha resources/config/service.resource)
-// Concentra o envio de requisicoes e as validacoes genericas (status e contrato).
+// Camada de servico: concentra o envio de requisicoes e as validacoes
+// genericas (status code e contrato via JSON Schema).
 const Ajv = require("ajv");
 const addFormats = require("ajv-formats");
 const { env } = require("../enviroments/env");
