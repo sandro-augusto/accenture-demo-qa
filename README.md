@@ -65,6 +65,9 @@ npm run cy:run:chrome
 
 # API
 npm run api:run
+
+# UI + API em sequência (sem gerar relatório)
+npm run test:all
 ```
 
 Detalhes de cada suíte (fluxos, cenários, notas técnicas) nos READMEs de cada domínio:
@@ -72,12 +75,43 @@ Detalhes de cada suíte (fluxos, cenários, notas técnicas) nos READMEs de cada
 
 ## 📊 Relatório Allure
 
-Os resultados das duas suítes vão para `allure-results/` na raiz.
+Os resultados das duas suítes são gravados em `allure-results/` na raiz, e o relatório HTML
+em `allure-report/`.
+
+### Forma recomendada: tudo em um comando
 
 ```bash
-npm run allure:generate   # gera o HTML em allure-report/
-npm run allure:open       # abre o relatório
-npm run allure:serve      # servidor temporário a partir dos resultados
+npm run test:all:allure
+```
+
+Esse comando faz, em sequência: **limpa** os resultados antigos → **roda a UI** (Chrome, com Allure)
+→ **roda a API** (com Allure) → **gera** o HTML → **abre** o relatório. É a forma correta de obter
+o relatório com **as duas suítes juntas**.
+
+> ⚠️ **Atenção:** `npm run test:all` **não** gera o relatório Allure da UI (ele apenas executa as
+> duas suítes). Para o relatório consolidado, use `npm run test:all:allure`. O motivo: o Allure
+> precisa da flag `--env allure=true`, que está nos scripts `test` (UI) e `api:run` (API) — o
+> `test:all` usa `cy:run:chrome` (sem essa flag na UI).
+
+### Passo a passo (se quiser rodar manualmente)
+
+```bash
+npm run allure:clear                 # limpa resultados antigos
+npm test                             # UI no Chrome, com Allure
+npm run api:run                      # API, com Allure
+npm run allure:generate              # gera o HTML em allure-report/
+npm run allure:open                  # abre o relatório
+```
+
+> A suíte de API contém um cenário que **falha de propósito** (evidência de um bug de contrato da
+> API — ver [`api-tests/README.md`](./api-tests/README.md)). Por isso o `test:all:allure` está
+> preparado para **não abortar** na falha e gerar o relatório mesmo assim — a falha aparece
+> registrada no Allure, que é o comportamento desejado.
+
+Outros comandos úteis:
+
+```bash
+npm run allure:serve      # sobe um servidor temporário a partir dos resultados
 ```
 
 ## 🧪 Scripts disponíveis
@@ -90,11 +124,13 @@ npm run allure:serve      # servidor temporário a partir dos resultados
 | `test`             | UI no Chrome gerando resultados do Allure                        |
 | `api:open`         | Abre o runner interativo da suíte de **API**                     |
 | `api:run`          | Suíte de **API** headless gerando resultados do Allure           |
+| `test:all`         | Roda UI + API em sequência (**sem** gerar relatório Allure)      |
+| `test:all:allure`  | **Recomendado:** limpa, roda UI + API (com Allure), gera e abre o relatório consolidado |
 | `allure:clear`     | Remove `allure-results` e `allure-report`                        |
 | `allure:generate`  | Gera o relatório HTML do Allure                                  |
 | `allure:open`      | Abre o relatório gerado do Allure                                |
 | `allure:serve`     | Sobe um servidor temporário do Allure                            |
-| `test:allure`      | Limpa, roda (UI), gera e abre o relatório em sequência           |
+| `test:allure`      | Limpa, roda **só a UI**, gera e abre o relatório                 |
 
 ## 📚 Documentação
 
