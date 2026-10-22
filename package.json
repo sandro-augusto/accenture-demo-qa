@@ -11,7 +11,7 @@
     "api:open": "cypress open --config-file cypress.config.api.js",
     "api:run": "cypress run --config-file cypress.config.api.js --env allure=true",
     "test:all": "npm run cy:run:chrome && npm run api:run",
-    "test:all:allure": "npm run allure:clear && npm run test && npm run api:run && npm run allure:generate && npm run allure:open",
+    "test:all:allure": "npm run allure:clear && npm run test && (npm run api:run || true) && npm run allure:generate && npm run allure:open",
     "allure:clear": "rm -rf allure-results allure-report || true",
     "allure:generate": "allure generate allure-results --clean -o allure-report",
     "allure:open": "allure open allure-report",
