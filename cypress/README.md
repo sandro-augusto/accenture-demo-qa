@@ -63,6 +63,35 @@ Suíte de testes de **interface** do site [DemoQA](https://demoqa.com/), em **Cy
 > testadas sem sucesso para o controle fino: `cy.trigger` sintéticos, `cypress-real-dnd` (só cobre
 > HTML5 drag, não mouse events) e `cypress-real-events` com várias calibrações de movimento.
 
+## ❓ Por que rodar no Chrome (e não no Electron)?
+
+O Fluxo 4 depende de **drag and drop**, e esse é o motivo da recomendação de usar o Chrome:
+
+1. **A biblioteca exige eventos "reais".** O `react-sortable-hoc` do DemoQA detecta o arraste
+   escutando a sequência `mousedown → mousemove → mouseup`. Ele só reage a eventos marcados pelo
+   navegador como confiáveis (`isTrusted: true`).
+
+2. **Os eventos sintéticos do Cypress não bastam.** Por padrão, `cy.trigger(...)` dispara eventos
+   via `dispatchEvent` do JavaScript. Eles chegam ao DOM, mas com `isTrusted: false`, então a
+   biblioteca os ignora — na prática, a lista **não reordenava**.
+
+3. **A solução usa o CDP.** O plugin `cypress-real-events` (`realMouseDown/Move/Up`) não dispara
+   eventos sintéticos: ele usa o **CDP (Chrome DevTools Protocol)** para pedir ao próprio motor do
+   navegador que gere eventos de mouse nativos, como um usuário real (`isTrusted: true`).
+
+4. **O CDP de injeção de eventos funciona no Chrome real, não no Electron headless padrão.** O CDP
+   é um recurso da família Chromium. Embora o Electron (navegador padrão do Cypress) seja baseado
+   em Chromium, a camada de automação sobre o Electron headless não encaminha esse CDP de forma
+   confiável para injeção de eventos nativos — nos testes, os `realMouse*` não surtiam efeito ali.
+   Ao rodar com `--browser chrome`, o canal CDP funciona e o drag passa a reordenar a lista.
+
+Resumindo a cadeia: **react-sortable-hoc exige eventos reais → eventos sintéticos do Cypress são
+ignorados → `cypress-real-events` injeta eventos nativos via CDP → o CDP de injeção funciona no
+Chrome real, não no Electron headless → logo, `--browser chrome`.**
+
+Os outros três fluxos (Practice Form, Browser Windows, Progress Bar) **não** dependem disso e
+rodariam em qualquer navegador; a exigência do Chrome existe só por causa do drag and drop.
+
 ## 📁 Estrutura
 
 ```
