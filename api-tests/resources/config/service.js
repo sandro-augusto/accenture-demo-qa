@@ -40,6 +40,15 @@ function sendGet(endpoint, headers) {
   });
 }
 
+function sendDelete(endpoint, headers) {
+  return cy.request({
+    method: "DELETE",
+    url: `${env.baseUrl}${endpoint}`,
+    headers,
+    failOnStatusCode: false,
+  });
+}
+
 // --- Validacoes genericas ---
 function validateStatusCode(response, statusCode) {
   expect(response.status, "status code").to.eq(statusCode);
@@ -58,6 +67,7 @@ module.exports = {
   headersJson,
   sendPost,
   sendGet,
+  sendDelete,
   validateStatusCode,
   validateContract,
 };

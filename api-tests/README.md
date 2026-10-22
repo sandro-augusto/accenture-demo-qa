@@ -114,6 +114,25 @@ npm run allure:generate
 npm run allure:open
 ```
 
+## ♻️ Independência dos testes e limpeza da base (setup/teardown)
+
+Cada cenário é **independente** e **não deixa resíduo** na base do DemoQA:
+
+- **Setup:** o cenário que precisa de usuário cria o **seu próprio** usuário (com nome aleatório,
+  evitando colisão de "User exists!").
+- **Teardown:** um hook `After` (em `resources/steps/bookstore_steps.js`) percorre todos os
+  usuários criados no cenário, gera um token para cada um e os **exclui** via
+  `DELETE /Account/v1/User/{userId}`. A limpeza roda mesmo que o cenário falhe no meio.
+
+Assim o usuário "nasce e morre" dentro do fluxo de cada teste: os cenários podem rodar em qualquer
+ordem (ou isoladamente) e a base fica limpa ao final. Validado na API real: o `DELETE` retorna
+`204` e o usuário deixa de existir em seguida.
+
+**Ciclo de vida (hooks):** antes de cada cenário, um hook reinicia o contexto (dados do usuário,
+token, última resposta) para garantir o isolamento entre testes. Ao fim de cada cenário, o hook
+`After` do Cucumber executa a limpeza (gera o token e exclui os usuários criados), rodando mesmo
+que o cenário falhe. Tudo implementado em `resources/steps/bookstore_steps.js`.
+
 ## 🔎 Decisões e aprendizados (comportamento real da API)
 
 - **Validação de contrato:** usamos **Ajv** (`resources/config/service.js` → `validateContract`),

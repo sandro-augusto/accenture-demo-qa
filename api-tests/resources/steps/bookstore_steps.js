@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Given, When, Then, After } from "@badeball/cypress-cucumber-preprocessor";
 
 const { statusCode } = require("../variables/service_variables");
 const { accountVariables } = require("../variables/account_variables");
@@ -25,6 +25,10 @@ const schemas = {
 // Reiniciado a cada cenario para evitar vazamento de estado.
 let ctx = {};
 
+// Usuarios criados no cenario atual, para serem excluidos no teardown
+// (cada teste cria o seu usuario e o apaga no fim -> independente e sem lixo).
+let usuariosCriados = [];
+
 function reset() {
   ctx = {
     userName: null,
@@ -34,10 +38,33 @@ function reset() {
     booksList: [],
     response: null,
   };
+  usuariosCriados = [];
 }
 
 reset();
 beforeEach(() => reset());
+
+// Registra um usuario criado com sucesso para limpeza posterior
+function registrarUsuario(userId, userName, password) {
+  if (userId) {
+    usuariosCriados.push({ userId, userName, password });
+  }
+}
+
+// Teardown: exclui todos os usuarios criados no cenario.
+// Gera um token valido para cada um (o DELETE exige Authorization) e,
+// em seguida, chama o endpoint de exclusao. Nao falha o cenario se a
+// limpeza der erro (ex.: usuario invalido que nunca chegou a ser criado).
+After(() => {
+  usuariosCriados.forEach(({ userId, userName, password }) => {
+    token.generateAccessToken(userName, password).then((resToken) => {
+      const tk = resToken.body && resToken.body.token;
+      if (tk) {
+        account.deleteUser(userId, tk);
+      }
+    });
+  });
+});
 
 // Helper: guarda a ultima resposta no contexto
 function store(res) {
@@ -55,7 +82,11 @@ Given("que eu crio um usuario valido", () => {
   ctx.password = fakePassword;
   account.createUserFlow(ctx.userName, ctx.password).then((res) => {
     store(res);
-    if (res.body && res.body.userID) ctx.userId = res.body.userID;
+    if (res.body && res.body.userID) {
+      ctx.userId = res.body.userID;
+      // registra para exclusao no teardown
+      registrarUsuario(ctx.userId, ctx.userName, ctx.password);
+    }
   });
 });
 

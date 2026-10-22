@@ -1,5 +1,10 @@
 // Keywords do dominio Account (espelha resources/keywords/*_keywords.resource)
-const { headersJson, sendPost, sendGet } = require("../config/service");
+const {
+  headersJson,
+  sendPost,
+  sendGet,
+  sendDelete,
+} = require("../config/service");
 const { endpoints } = require("../enviroments/endpoints");
 const userFixture = require("../../fixtures/user_fixture.json");
 
@@ -17,6 +22,11 @@ function confirmUserIsAuthorized(userName, password) {
 // Consulta detalhes do usuario (requer token)
 function getUserDetails(userId, token) {
   return sendGet(`${endpoints.userDetails}/${userId}`, headersJson(token));
+}
+
+// Exclui um usuario (requer token). Usado no teardown para nao sujar a base.
+function deleteUser(userId, token) {
+  return sendDelete(`${endpoints.deleteUser}/${userId}`, headersJson(token));
 }
 
 // --- Validacoes de resposta ---
@@ -43,6 +53,7 @@ module.exports = {
   createUserFlow,
   confirmUserIsAuthorized,
   getUserDetails,
+  deleteUser,
   validateUserCreatedResponse,
   validateAuthorizedIsTrue,
   validateUserDetailsResponse,

@@ -4,6 +4,10 @@ const { aguardarElemento } = require("../actions");
 // Ordem crescente esperada dos itens do Sortable do DemoQA
 const ORDEM_CRESCENTE = ["One", "Two", "Three", "Four", "Five", "Six"];
 
+// Pausa (ms) entre as acoes de drag, para visualizacao no runner.
+// Ajustavel: aumente para ver mais devagar, diminua para rodar mais rapido.
+const PAUSA_VISUAL = 600;
+
 // Le a ordem atual dos itens da lista
 function lerOrdem() {
   return cy
@@ -11,9 +15,10 @@ function lerOrdem() {
     .then(($els) => Cypress._.map($els, (e) => e.textContent.trim()));
 }
 
-// Arrasta o item do indice "de" para o indice "para" usando eventos de
-// mouse reais (cypress-real-events). Os movimentos iniciais sao disparados
-// DENTRO do proprio item para ativar o drag do react-sortable-hoc.
+// Arrasta o item que esta no indice "de" para o indice "para" usando
+// eventos de mouse reais (cypress-real-events). Os movimentos iniciais sao
+// disparados DENTRO do proprio item para ativar o drag do react-sortable-hoc.
+// Reorganiza relendo as coordenadas reais dos elementos no momento do drag.
 function arrastar(de, para) {
   if (de === para) return;
   cy.get(el.itensLista).eq(de).then(($src) => {
@@ -22,7 +27,6 @@ function arrastar(de, para) {
       const t = $tgt[0].getBoundingClientRect();
       const sx = Math.round(s.x + s.width / 2);
       const sy = Math.round(s.y + s.height / 2);
-      const tx = Math.round(t.x + t.width / 2);
       const ty = Math.round(t.y + t.height / 2);
       const dir = ty > sy ? 1 : -1;
       // Solta um pouco alem da metade do item de destino, na direcao
@@ -50,6 +54,7 @@ function arrastar(de, para) {
       }
       cy.wait(80);
       cy.get("body").realMouseUp({ position: "topLeft" });
+      cy.wait(PAUSA_VISUAL);
     });
   });
 }
@@ -61,30 +66,35 @@ export default {
 
   lerOrdem,
 
-  // Ordena a lista em ordem crescente usando drag-and-drop (selection sort).
-  // Para cada posicao i, encontra o item correto e arrasta-o para i,
-  // relendo o DOM entre cada movimento.
-  //
-  // IMPORTANTE: o Sortable do DemoQA usa react-sortable-hoc (eventos de
-  // mouse/pointer). O drag real funciona (cypress-real-events no Chrome,
-  // com movimentos iniciais dentro do proprio item), porem o controle fino
-  // da posicao de destino NAO e deterministico: o item pode pular mais de
-  // uma posicao. Por isso este fluxo foca em validar a ordem crescente, que
-  // e o estado em que o DemoQA ja entrega a lista. Em uma lista desordenada,
-  // a convergencia deste metodo nao e garantida. Abordagens testadas sem
-  // sucesso para controle fino: cy.trigger sinteticos, cypress-real-dnd
-  // (apenas HTML5 drag), e cypress-real-events com varias calibracoes.
+  // Embaralha a lista movendo alguns itens, para sair da ordem crescente
+  // em que o DemoQA entrega a pagina. Assim o passo de ordenacao tem efeito
+  // visivel e real.
+  embaralhar() {
+    arrastar(0, 5); // move o primeiro item para o fim
+    arrastar(0, 3); // move o (novo) primeiro item para o meio
+    arrastar(1, 4); // mais uma troca para desordenar
+  },
+
+  // Ordena a lista em ordem crescente via trocas adjacentes (bubble sort).
+  // A cada passo move um item apenas uma posicao (troca com o vizinho),
+  // relendo o DOM entre as trocas. Isso evita o controle fino de "pular N
+  // posicoes de uma vez", que e instavel no react-sortable-hoc, e torna o
+  // drag confiavel e visivel. Combinado com embaralhar(), o fluxo demonstra
+  // o drag and drop de verdade: desordena a lista e a reordena para crescente.
   ordenarCrescente() {
-    ORDEM_CRESCENTE.forEach((esperado, i) => {
-      lerOrdem().then((atual) => {
-        if (atual[i] !== esperado) {
-          const origem = atual.indexOf(esperado);
-          if (origem !== -1) {
-            arrastar(origem, i);
+    const n = ORDEM_CRESCENTE.length;
+    for (let passada = 0; passada < n - 1; passada++) {
+      for (let i = 0; i < n - 1; i++) {
+        lerOrdem().then((atual) => {
+          const atualIdx = ORDEM_CRESCENTE.indexOf(atual[i]);
+          const proxIdx = ORDEM_CRESCENTE.indexOf(atual[i + 1]);
+          // Se o item atual "vale mais" que o proximo, troca os dois
+          if (atualIdx > proxIdx) {
+            arrastar(i, i + 1);
           }
-        }
-      });
-    });
+        });
+      }
+    }
   },
 
   // Valida que a lista esta em ordem crescente (One -> Six)

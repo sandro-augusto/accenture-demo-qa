@@ -5,8 +5,12 @@ import sortable from "../../support/pages/sortablePage";
 // Os steps de acessar a home, selecionar o card e clicar no submenu
 // estao em common_steps.js.
 
-When("coloco os elementos em ordem crescente via drag and drop", () => {
+When("embaralho a lista de elementos", () => {
   sortable.validarPagina();
+  sortable.embaralhar();
+});
+
+When("coloco os elementos em ordem crescente via drag and drop", () => {
   sortable.ordenarCrescente();
 });
 
