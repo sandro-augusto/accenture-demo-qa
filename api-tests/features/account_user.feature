@@ -9,12 +9,22 @@ Funcionalidade: BookStore API - Criacao de Usuario
     E a resposta deve seguir o contrato "user-success"
     E a resposta de criacao deve conter o usuario criado
 
-  Cenario: CT-002 Nao criar usuario ja existente
+  # Comportamento REAL da API: o DemoQA responde 406 para usuario duplicado.
+  Cenario: CT-002 Nao criar usuario ja existente (comportamento real da API)
     Dado que eu crio um usuario valido
     Quando eu tento criar o mesmo usuario novamente
     Entao o status code deve ser 406
     E a resposta deve seguir o contrato "error"
     E a resposta de erro deve corresponder a "usuario-existente"
+
+  # BUG CONHECIDO: pelo padrao REST, "recurso ja existe" deveria retornar 409 Conflict,
+  # nao 406 (Not Acceptable). Este cenario afirma o status CORRETO e, por isso, FALHA de
+  # proposito contra a API real - evidenciando que a automacao detecta a inconsistencia.
+  @bug-conhecido
+  Cenario: CT-002b Usuario duplicado deveria retornar 409 (Conflict) - FALHA ESPERADA
+    Dado que eu crio um usuario valido
+    Quando eu tento criar o mesmo usuario novamente
+    Entao o status code deve ser 409
 
   Cenario: CT-003 Nao criar usuario com senha fraca
     Dado que eu crio um usuario com senha fraca

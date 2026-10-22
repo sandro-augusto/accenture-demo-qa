@@ -5,6 +5,7 @@ const statusCode = {
   unauthorized: 401,
   notFound: 404,
   notAcceptable: 406,
+  conflict: 409,
 };
 
 module.exports = { statusCode };
