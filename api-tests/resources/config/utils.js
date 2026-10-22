@@ -1,4 +1,3 @@
-// Geracao de massa de dados (fakers)
 const { faker } = require("@faker-js/faker");
 
 function fakers() {
@@ -6,8 +5,8 @@ function fakers() {
   return {
     // Usuario aleatorio para evitar colisao de "User exists!"
     fakeUserName: `qauser_${randomNumber}`,
-    // Senha valida conforme a politica do DemoQA
-    // (maiuscula, minuscula, digito, caractere especial, min. 8 chars)
+    // Senha conforme a politica do DemoQA (maiuscula, minuscula, digito,
+    // caractere especial, min. 8 chars)
     fakePassword: "Senha@123",
   };
 }

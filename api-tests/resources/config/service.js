@@ -1,5 +1,3 @@
-// Camada de servico: concentra o envio de requisicoes e as validacoes
-// genericas (status code e contrato via JSON Schema).
 const Ajv = require("ajv");
 const addFormats = require("ajv-formats");
 const { env } = require("../enviroments/env");
@@ -7,7 +5,6 @@ const { env } = require("../enviroments/env");
 const ajv = new Ajv({ allErrors: true, strict: false });
 addFormats(ajv);
 
-// --- Headers padrao (Authorization opcional) ---
 function headersJson(token) {
   const headers = {
     "Content-Type": "application/json",
@@ -20,7 +17,6 @@ function headersJson(token) {
   return headers;
 }
 
-// --- Envio de requisicoes ---
 function sendPost(endpoint, body, headers) {
   return cy.request({
     method: "POST",
@@ -49,7 +45,6 @@ function sendDelete(endpoint, headers) {
   });
 }
 
-// --- Validacoes genericas ---
 function validateStatusCode(response, statusCode) {
   expect(response.status, "status code").to.eq(statusCode);
 }

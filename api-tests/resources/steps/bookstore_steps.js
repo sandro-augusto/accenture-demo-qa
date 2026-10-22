@@ -44,7 +44,6 @@ function reset() {
 reset();
 beforeEach(() => reset());
 
-// Registra um usuario criado com sucesso para limpeza posterior
 function registrarUsuario(userId, userName, password) {
   if (userId) {
     usuariosCriados.push({ userId, userName, password });
@@ -66,15 +65,10 @@ After(() => {
   });
 });
 
-// Helper: guarda a ultima resposta no contexto
 function store(res) {
   ctx.response = res;
   return res;
 }
-
-// =========================================================
-// GIVEN / WHEN - acoes
-// =========================================================
 
 Given("que eu crio um usuario valido", () => {
   const { fakeUserName, fakePassword } = fakers();
@@ -84,7 +78,6 @@ Given("que eu crio um usuario valido", () => {
     store(res);
     if (res.body && res.body.userID) {
       ctx.userId = res.body.userID;
-      // registra para exclusao no teardown
       registrarUsuario(ctx.userId, ctx.userName, ctx.password);
     }
   });
@@ -167,10 +160,6 @@ When("eu tento alugar um livro com ISBN inexistente", () => {
 When("eu consulto os detalhes do usuario criado", () => {
   account.getUserDetails(ctx.userId, ctx.token).then(store);
 });
-
-// =========================================================
-// THEN - validacoes
-// =========================================================
 
 Then("o status code deve ser {int}", (code) => {
   validateStatusCode(ctx.response, code);

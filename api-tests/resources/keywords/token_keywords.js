@@ -1,9 +1,7 @@
-// Keywords do dominio Token (geracao de token de acesso)
 const { headersJson, sendPost } = require("../config/service");
 const { endpoints } = require("../enviroments/endpoints");
 const { accountVariables } = require("../variables/account_variables");
 
-// Gera um token de acesso
 function generateAccessToken(userName, password) {
   return sendPost(
     endpoints.generateToken,

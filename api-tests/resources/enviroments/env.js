@@ -1,4 +1,3 @@
-// Controle de ambiente
 const ENV = "Prd";
 
 const ENVIRONMENTS = {

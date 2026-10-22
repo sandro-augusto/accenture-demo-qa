@@ -13,12 +13,10 @@ export function gerarDadosFormulario() {
     email: faker.internet
       .email({ firstName: primeiroNome, lastName: ultimoNome })
       .toLowerCase(),
-    // Genero aleatorio
     genero: faker.helpers.arrayElement(generos),
     // Celular com exatamente 10 digitos (exigencia do DemoQA)
     celular: faker.string.numeric(10),
     endereco: faker.location.streetAddress(),
-    // Hobby aleatorio
     hobby: faker.helpers.arrayElement(hobbies),
     // Materia valida do autocomplete do DemoQA
     materia: faker.helpers.arrayElement([

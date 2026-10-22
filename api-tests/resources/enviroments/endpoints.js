@@ -1,4 +1,3 @@
-// Endpoints da API
 const endpoints = {
   // Account
   createUser: "/Account/v1/User",

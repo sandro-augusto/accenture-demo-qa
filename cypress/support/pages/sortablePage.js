@@ -8,7 +8,6 @@ const ORDEM_CRESCENTE = ["One", "Two", "Three", "Four", "Five", "Six"];
 // Ajustavel: aumente para ver mais devagar, diminua para rodar mais rapido.
 const PAUSA_VISUAL = 600;
 
-// Le a ordem atual dos itens da lista
 function lerOrdem() {
   return cy
     .get(el.itensLista)
@@ -97,7 +96,6 @@ export default {
     }
   },
 
-  // Valida que a lista esta em ordem crescente (One -> Six)
   validarOrdemCrescente() {
     lerOrdem().then((atual) => {
       expect(atual, "ordem dos itens do Sortable").to.deep.eq(ORDEM_CRESCENTE);

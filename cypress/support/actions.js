@@ -81,7 +81,6 @@ function anexarArquivoForcado(el, caminhoArquivo) {
   return anexarArquivoForcado;
 }
 
-// Clique em um elemento de uma lista que contenha determinado texto
 function clicarPorTexto(el, texto) {
   try {
     cy.contains(el, texto).should("be.visible").click({ force: true });
@@ -104,7 +103,6 @@ function obterTexto(el) {
   return texto;
 }
 
-// Valida que um elemento esta visivel na tela
 function validarVisivel(el) {
   try {
     cy.get(el).should("be.visible");
@@ -115,7 +113,6 @@ function validarVisivel(el) {
   return validarVisivel;
 }
 
-// Valida que um elemento nao existe mais no DOM
 function validarNaoExiste(el) {
   try {
     cy.get(el).should("not.exist");
@@ -126,7 +123,6 @@ function validarNaoExiste(el) {
   return validarNaoExiste;
 }
 
-// Obtem o valor de um atributo de um elemento (ex.: "aria-valuenow")
 function obterAtributo(el, atributo) {
   aguardarElemento(el);
   let valor;

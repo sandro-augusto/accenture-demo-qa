@@ -8,7 +8,6 @@ import { gerarDadosFormulario } from "../../support/utils";
 
 When("preencho todo o formulario com valores aleatorios", () => {
   const dados = gerarDadosFormulario();
-  // Guarda os dados para uso posterior, se necessario
   cy.wrap(dados).as("dadosFormulario");
 
   forms.preencherNome(dados.primeiroNome, dados.ultimoNome);

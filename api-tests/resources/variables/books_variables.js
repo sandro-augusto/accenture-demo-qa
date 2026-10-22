@@ -1,4 +1,3 @@
-// Variaveis do dominio BookStore
 const booksVariables = {
   // Quantidade de livros a alugar no fluxo principal
   qtdLivrosAlugar: 2,

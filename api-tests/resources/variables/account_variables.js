@@ -1,4 +1,3 @@
-// Variaveis do dominio Account (dados de teste, codigos e mensagens de erro)
 const accountVariables = {
   // Dados de cenarios alternativos
   weakPassword: "123",
