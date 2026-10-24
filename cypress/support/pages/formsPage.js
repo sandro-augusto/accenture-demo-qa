@@ -5,7 +5,7 @@ const {
   pressionarTecla,
   anexarArquivoForcado,
   obterTexto,
-  validarVisivel,
+  aguardarElemento,
   validarNaoExiste,
   selecionarAutocomplete,
 } = require("../actions");
@@ -68,7 +68,7 @@ export default {
   },
 
   validarModalAberto() {
-    validarVisivel(el.modal);
+    aguardarElemento(el.modal);
     return obterTexto(el.modalTitulo);
   },
 

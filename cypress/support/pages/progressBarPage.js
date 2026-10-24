@@ -2,7 +2,6 @@ let el = require("../elements/progressBarElements").PROGRESS_BAR;
 const {
   clicarForcado,
   aguardarElemento,
-  validarVisivel,
   validarNaoExiste,
 } = require("../actions");
 
@@ -47,7 +46,7 @@ export default {
   },
 
   resetar() {
-    validarVisivel(el.botaoReset);
+    aguardarElemento(el.botaoReset);
     clicarForcado(el.botaoReset);
   },
 

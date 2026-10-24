@@ -103,16 +103,6 @@ function obterTexto(el) {
   return texto;
 }
 
-function validarVisivel(el) {
-  try {
-    cy.get(el).should("be.visible");
-    cy.log("Elemento visivel: " + el);
-  } catch (error) {
-    cy.log("Excecao capturada: " + error.message);
-  }
-  return validarVisivel;
-}
-
 function validarNaoExiste(el) {
   try {
     cy.get(el).should("not.exist");
@@ -161,7 +151,6 @@ module.exports = {
   clicarPorTexto,
   obterTexto,
   obterAtributo,
-  validarVisivel,
   validarNaoExiste,
   selecionarAutocomplete,
 };

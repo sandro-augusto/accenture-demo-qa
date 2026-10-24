@@ -3,7 +3,6 @@ const {
   clicarForcado,
   aguardarElemento,
   carregarPagina,
-  validarVisivel,
   obterTexto,
 } = require("../actions");
 
@@ -34,7 +33,7 @@ export default {
     return cy.get("@" + STUB_ALIAS).then((stub) => {
       const urlAberta = stub.getCall(0).args[0];
       carregarPagina(urlAberta);
-      validarVisivel(el.tituloPaginaAmostra);
+      aguardarElemento(el.tituloPaginaAmostra);
       return obterTexto(el.tituloPaginaAmostra).then((texto) => {
         expect(texto.trim()).to.eq(mensagemEsperada);
       });
